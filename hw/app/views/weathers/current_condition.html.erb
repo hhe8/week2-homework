@@ -1,0 +1,23 @@
+
+<% city = params["city"]
+  options = [params["pressure"],params["humidity"]]
+# require_relative 'google_weather'
+# google_weather.rb under lib folder
+  weather = OpenWeather.new(city)
+  data = weather.data
+  unit = {"pressure" => "(milli bar)", "humidity"=>"(%)"}  %>
+
+<h1>Current Conditions for <%=city%>: </h1>
+<% if data != "404 error" %>
+  <p>temperature: <%=data["temp"]%> Low: <%=data["temp_min"]%> High: <%=data["temp_max"]%> (F) </p>
+
+  <% options.each do |option| %>
+    <% if option != nil%>
+      <p><%=option%>: <%=data[option]%> <%=unit[option] %></p>
+    <% end %>
+  <% end %>  
+
+<% else %>
+  <p>The city <mark><%=city%></mark> does not exist. Please go back and try again</p>
+  <a href="/weather"> Click Here To Go Back></a>
+<% end %>
